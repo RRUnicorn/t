@@ -1,0 +1,61 @@
+Private Sub Worksheet_Change(ByVal Target As Range)
+
+        'ThisWorkbook.Worksheets("Fonction dérivée").Protect Password:="", _
+ UserInterfaceOnly:=True
+ 
+    On Error Resume Next
+    
+    Application.EnableEvents = False
+    
+    Dim cell As Range
+
+    With Target
+        Select Case .Address
+            Case "$C$10"
+                If Left(.Formula, 8) <> "=IFERROR" Then
+                    .Formula = "=IFERROR(" & Mid(.Formula, 2) & ",NA())"
+                End If
+                .AutoFill Destination:=Range("C10:C114"), Type:=xlFillValues
+            Case "$E$10"
+                If Left(.Formula, 8) <> "=IFERROR" Then
+                    .Formula = "=IFERROR(" & Mid(.Formula, 2) & ",NA())"
+                End If
+                .AutoFill Destination:=Range("E10:E114"), Type:=xlFillValues
+            Case "$T$5"
+                .Replace What:="x", Replacement:="n", SearchOrder:=xlByColumns, MatchCase:=False
+                .AutoFill Destination:=Range("T5:T106"), Type:=xlFillValues
+            Case "$U$5"
+                .Replace What:="x", Replacement:="n", SearchOrder:=xlByColumns, MatchCase:=False
+                .AutoFill Destination:=Range("U5:U106"), Type:=xlFillValues
+        End Select
+    End With
+    
+    With ActiveSheet.ChartObjects("Graphique 1").Chart
+        Select Case Target.Address
+            Case "$B$6"
+                .Axes(xlCategory).MaximumScale = Target.Value
+            Case "$B$5"
+                .Axes(xlCategory).MinimumScale = Target.Value
+            Case "$L$14"
+                .Axes(xlValue).MaximumScale = Target.Value
+            Case "$L$15"
+                .Axes(xlValue).MinimumScale = Target.Value
+        End Select
+    End With
+      
+    With ActiveSheet.ChartObjects("Graphique 2").Chart
+        Select Case Target.Address
+            Case "$B$6"
+                .Axes(xlCategory).MaximumScale = Target.Value
+            Case "$B$5"
+                .Axes(xlCategory).MinimumScale = Target.Value
+            Case "$L$17"
+                .Axes(xlValue).MaximumScale = Target.Value
+            Case "$L$18"
+                .Axes(xlValue).MinimumScale = Target.Value
+        End Select
+    End With
+    
+    Application.EnableEvents = True
+
+End Sub
